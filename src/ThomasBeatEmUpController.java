@@ -15,10 +15,11 @@ import java.net.URL;
 import static javax.imageio.ImageIO.read;
 
 /***********************************************************************************************
- * David Frieder's Thomas Game Copyright 2018 David Frieder 10/16/2018 rev 3.1
+ * David Frieder's Thomas Game Copyright 2018 David Frieder 10/19/2018 rev 3.2
+ * 
  * Trying to consolidate track methods vic 10/9/2018
  ***********************************************************************************************/
-public class ThomasShootEmUpController extends JComponent implements ActionListener, Runnable, KeyListener
+public class ThomasBeatEmUpController extends JComponent implements ActionListener, Runnable, KeyListener
 {
    public boolean isGoingRight = false;
    int trackYPos;
@@ -80,7 +81,7 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
     ***********************************************************************************************/
    public static void main(String[] args)
    {
-      SwingUtilities.invokeLater(new ThomasShootEmUpController());
+      SwingUtilities.invokeLater(new ThomasBeatEmUpController());
    }
 
    /***********************************************************************************************
@@ -181,6 +182,7 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
       g2.setTransform(thomasTransform);
       try
       {
+//    	 Image[] reverseThomasImageArray
          thomasSpriteImageCounter = thomasSpriteImageCounter % 8;
          thomasSpriteImage = thomasSpriteImageArray[thomasSpriteImageCounter];
          reverseThomasImage = reverseThomasImageArray[thomasSpriteImageCounter];
@@ -353,28 +355,28 @@ public class ThomasShootEmUpController extends JComponent implements ActionListe
     ***********************************************************************************************/
    private void loadImages()
    {
-      try
-      {
-         thomasSpriteImageArray[0] = read(getClass().getResource("Thomas1.png"));
-         thomasSpriteImageArray[1] = read(getClass().getResource("Thomas2.png"));
-         thomasSpriteImageArray[2] = read(getClass().getResource("Thomas3.png"));
-         thomasSpriteImageArray[3] = read(getClass().getResource("Thomas4.png"));
-         thomasSpriteImageArray[4] = read(getClass().getResource("Thomas5.png"));
-         thomasSpriteImageArray[5] = read(getClass().getResource("Thomas6.png"));
-         thomasSpriteImageArray[6] = read(getClass().getResource("Thomas7.png"));
-         thomasSpriteImageArray[7] = read(getClass().getResource("Thomas8.png"));
-         reverseThomasImageArray[0] = read(getClass().getResource("Reversed Thomas1.png"));
-         reverseThomasImageArray[1] = read(getClass().getResource("Reversed Thomas2.png"));
-         reverseThomasImageArray[2] = read(getClass().getResource("Reversed Thomas3.png"));
-         reverseThomasImageArray[3] = read(getClass().getResource("Reversed Thomas4.png"));
-         reverseThomasImageArray[4] = read(getClass().getResource("Reversed Thomas5.png"));
-         reverseThomasImageArray[5] = read(getClass().getResource("Reversed Thomas6.png"));
-         reverseThomasImageArray[6] = read(getClass().getResource("Reversed Thomas7.png"));
-         reverseThomasImageArray[7] = read(getClass().getResource("Reversed Thomas8.png"));
-      } catch (IOException e)
-      {
-         System.out.println("error reading from thomas sprite array");
-      }
+//      try
+//      {
+//         thomasSpriteImageArray[0] = read(getClass().getResource("Thomas1.png"));
+//         thomasSpriteImageArray[1] = read(getClass().getResource("Thomas2.png"));
+//         thomasSpriteImageArray[2] = read(getClass().getResource("Thomas3.png"));
+//         thomasSpriteImageArray[3] = read(getClass().getResource("Thomas4.png"));
+//         thomasSpriteImageArray[4] = read(getClass().getResource("Thomas5.png"));
+//         thomasSpriteImageArray[5] = read(getClass().getResource("Thomas6.png"));
+//         thomasSpriteImageArray[6] = read(getClass().getResource("Thomas7.png"));
+//         thomasSpriteImageArray[7] = read(getClass().getResource("Thomas8.png"));
+//         reverseThomasImageArray[0] = read(getClass().getResource("Reversed Thomas1.png"));
+//         reverseThomasImageArray[1] = read(getClass().getResource("Reversed Thomas2.png"));
+//         reverseThomasImageArray[2] = read(getClass().getResource("Reversed Thomas3.png"));
+//         reverseThomasImageArray[3] = read(getClass().getResource("Reversed Thomas4.png"));
+//         reverseThomasImageArray[4] = read(getClass().getResource("Reversed Thomas5.png"));
+//         reverseThomasImageArray[5] = read(getClass().getResource("Reversed Thomas6.png"));
+//         reverseThomasImageArray[6] = read(getClass().getResource("Reversed Thomas7.png"));
+//         reverseThomasImageArray[7] = read(getClass().getResource("Reversed Thomas8.png"));
+//      } catch (IOException e)
+//      {
+//         System.out.println("error reading from thomas sprite array");
+//      }
       roadImage = Toolkit.getDefaultToolkit().createImage(getClass().getResource("ground.png"));
       trackImage = Toolkit.getDefaultToolkit().createImage(getClass().getResource("Tracks.png"));
       roadWidth = roadImage.getWidth(null);
