@@ -15,7 +15,7 @@ import java.net.URL;
 import static javax.imageio.ImageIO.read;
 
 /***********************************************************************************************
- * David Frieder's Thomas Game Copyright 2018 David Frieder 10/19/2018 rev 3.2
+ * David Frieder's Thomas Game Copyright 2018 David Frieder 10/21/2018 rev 3.3
  * 
  * Trying to consolidate track methods vic 10/9/2018
  ***********************************************************************************************/
@@ -74,7 +74,7 @@ public class ThomasBeatEmUpController extends JComponent implements ActionListen
    int trackHeight;
    private int thomasYOffsetFromGround = 0;
    private boolean lastWayFacing = true;
- 
+   public Thomas thomas = new Thomas();
 
    /***********************************************************************************************
     * Main
@@ -90,7 +90,7 @@ public class ThomasBeatEmUpController extends JComponent implements ActionListen
    @Override
    public void run()
    {
-      Thomas thomas = new Thomas();
+    
       loadImages();
       setUpMainGameWindow();
       thomasThemeSong.loop();
@@ -108,7 +108,7 @@ public class ThomasBeatEmUpController extends JComponent implements ActionListen
       drawRoad();
       drawObstacle();
       drawTracks(0, heightOfScreen / 2);// ...Draw upper tracks left half
-      drawTracks(trackWidth*1.5, heightOfScreen/2);// .. Draw upper tracks right half
+//      drawTracks(trackWidth*1.5, heightOfScreen/2);// .. Draw upper tracks right half
       if (testIntersection(thomasShape, upperTrackShape))
       {
          if (jumpingVelocity > 0 && thomasYOffsetFromGround < trackYPos)
@@ -182,7 +182,8 @@ public class ThomasBeatEmUpController extends JComponent implements ActionListen
       g2.setTransform(thomasTransform);
       try
       {
-//    	 Image[] reverseThomasImageArray
+    	 thomasSpriteImageArray = thomas.getThomasSpriteImageArray();
+    	 reverseThomasImageArray = thomas.getReverseThomasImageArray();
          thomasSpriteImageCounter = thomasSpriteImageCounter % 8;
          thomasSpriteImage = thomasSpriteImageArray[thomasSpriteImageCounter];
          reverseThomasImage = reverseThomasImageArray[thomasSpriteImageCounter];
@@ -208,6 +209,131 @@ public class ThomasBeatEmUpController extends JComponent implements ActionListen
       } catch (Exception ex)
       {
          System.out.println("error reading thomas thomasSpriteImage from thomas sprite thomasSpriteImage array");
+      }
+   }
+
+
+   /***********************************************************************************************
+    * Get .png files, convert to Image and load sprite array
+    ***********************************************************************************************/
+   private void loadImages()
+   {
+//      try
+//      {
+//         thomasSpriteImageArray[0] = read(getClass().getResource("Thomas1.png"));
+//         thomasSpriteImageArray[1] = read(getClass().getResource("Thomas2.png"));
+//         thomasSpriteImageArray[2] = read(getClass().getResource("Thomas3.png"));
+//         thomasSpriteImageArray[3] = read(getClass().getResource("Thomas4.png"));
+//         thomasSpriteImageArray[4] = read(getClass().getResource("Thomas5.png"));
+//         thomasSpriteImageArray[5] = read(getClass().getResource("Thomas6.png"));
+//         thomasSpriteImageArray[6] = read(getClass().getResource("Thomas7.png"));
+//         thomasSpriteImageArray[7] = read(getClass().getResource("Thomas8.png"));
+//         reverseThomasImageArray[0] = read(getClass().getResource("Reversed Thomas1.png"));
+//         reverseThomasImageArray[1] = read(getClass().getResource("Reversed Thomas2.png"));
+//         reverseThomasImageArray[2] = read(getClass().getResource("Reversed Thomas3.png"));
+//         reverseThomasImageArray[3] = read(getClass().getResource("Reversed Thomas4.png"));
+//         reverseThomasImageArray[4] = read(getClass().getResource("Reversed Thomas5.png"));
+//         reverseThomasImageArray[5] = read(getClass().getResource("Reversed Thomas6.png"));
+//         reverseThomasImageArray[6] = read(getClass().getResource("Reversed Thomas7.png"));
+//         reverseThomasImageArray[7] = read(getClass().getResource("Reversed Thomas8.png"));
+//      } catch (IOException e)
+//      {
+//         System.out.println("error reading from thomas sprite array");
+//      }
+      roadImage = Toolkit.getDefaultToolkit().createImage(getClass().getResource("ground.png"));
+      trackImage = Toolkit.getDefaultToolkit().createImage(getClass().getResource("Tracks.png"));
+      roadWidth = roadImage.getWidth(null);
+      trackWidth = trackImage.getWidth(null);
+   }
+
+   /***********************************************************************************************
+    * Set up main JFrame
+    ***********************************************************************************************/
+   private void setUpMainGameWindow()
+   {
+      mainGameWindow.setTitle("Thomas the tank");
+      mainGameWindow.setSize(widthOfScreen, heightOfScreen);
+      mainGameWindow.add(this);// Adds the paint method to the JFrame
+      mainGameWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+      mainGameWindow.getContentPane().setBackground(new Color(200, 235, 255));
+      mainGameWindow.setVisible(true);
+      mainGameWindow.addKeyListener(this);
+   }
+
+   /***********************************************************************************************
+    * Check for intersections
+    ***********************************************************************************************/
+   public boolean testIntersection(Shape shapeA, Shape shapeB)
+   {
+	  Area areaA = null;
+	  Area areaB = null;
+      areaA = new Area(shapeA);
+      if (shapeB != null)// put this in to fix compile problem
+      {
+         areaB = new Area(shapeB);
+      }
+      areaA.transform(thomasTransform);
+      areaB.transform(upperTrackTransform);
+      if (shapeB != null)// put this in to fix compile problem
+      {
+         areaA.intersect(areaB);
+         System.out.println("intersect");
+      }
+      return !areaA.isEmpty();
+   }
+   
+   /***********************************************************************************************
+    * Respond to key typed
+    ***********************************************************************************************/
+   @Override
+   public void keyTyped(KeyEvent e)
+   {
+   }
+
+   /***********************************************************************************************
+    * Respond to key pressed
+    ***********************************************************************************************/
+   @Override
+   public void keyPressed(KeyEvent e)
+   {
+      if (e.getKeyCode() == KeyEvent.VK_RIGHT) // going right
+      {
+         isGoingRight = true;
+         isGoingLeft = false;
+      }
+      if (e.getKeyCode() == KeyEvent.VK_LEFT) // going left
+      {
+         isGoingLeft = true;
+         isGoingRight = false;
+         animationTicker.start();
+      }
+      if (e.getKeyCode() == KeyEvent.VK_LEFT && e.getKeyCode() == KeyEvent.VK_RIGHT)
+      {
+         isGoingLeft = false;
+         isGoingRight = false;
+      }
+      if (e.getKeyCode() == KeyEvent.VK_UP)
+      {
+         isJumping = true;
+      }
+   }
+
+   /***********************************************************************************************
+    * Respond to key released
+    ***********************************************************************************************/
+   @Override
+   public void keyReleased(KeyEvent e)
+   {
+      if (e.getKeyCode() == KeyEvent.VK_RIGHT) // going right
+      {
+         isGoingRight = false;
+      }
+      if (e.getKeyCode() == KeyEvent.VK_LEFT) // going left
+      {
+         isGoingLeft = false;
+      }
+      if (e.getKeyCode() == KeyEvent.VK_UP)
+      {
       }
    }
 
@@ -295,127 +421,4 @@ public class ThomasBeatEmUpController extends JComponent implements ActionListen
       }
    }
 
-   /***********************************************************************************************
-    * Respond to key typed
-    ***********************************************************************************************/
-   @Override
-   public void keyTyped(KeyEvent e)
-   {
-   }
-
-   /***********************************************************************************************
-    * Respond to key pressed
-    ***********************************************************************************************/
-   @Override
-   public void keyPressed(KeyEvent e)
-   {
-      if (e.getKeyCode() == KeyEvent.VK_RIGHT) // going right
-      {
-         isGoingRight = true;
-         isGoingLeft = false;
-      }
-      if (e.getKeyCode() == KeyEvent.VK_LEFT) // going left
-      {
-         isGoingLeft = true;
-         isGoingRight = false;
-         animationTicker.start();
-      }
-      if (e.getKeyCode() == KeyEvent.VK_LEFT && e.getKeyCode() == KeyEvent.VK_RIGHT)
-      {
-         isGoingLeft = false;
-         isGoingRight = false;
-      }
-      if (e.getKeyCode() == KeyEvent.VK_UP)
-      {
-         isJumping = true;
-      }
-   }
-
-   /***********************************************************************************************
-    * Respond to key released
-    ***********************************************************************************************/
-   @Override
-   public void keyReleased(KeyEvent e)
-   {
-      if (e.getKeyCode() == KeyEvent.VK_RIGHT) // going right
-      {
-         isGoingRight = false;
-      }
-      if (e.getKeyCode() == KeyEvent.VK_LEFT) // going left
-      {
-         isGoingLeft = false;
-      }
-      if (e.getKeyCode() == KeyEvent.VK_UP)
-      {
-      }
-   }
-
-   /***********************************************************************************************
-    * Get .png files, convert to Image and load sprite array
-    ***********************************************************************************************/
-   private void loadImages()
-   {
-//      try
-//      {
-//         thomasSpriteImageArray[0] = read(getClass().getResource("Thomas1.png"));
-//         thomasSpriteImageArray[1] = read(getClass().getResource("Thomas2.png"));
-//         thomasSpriteImageArray[2] = read(getClass().getResource("Thomas3.png"));
-//         thomasSpriteImageArray[3] = read(getClass().getResource("Thomas4.png"));
-//         thomasSpriteImageArray[4] = read(getClass().getResource("Thomas5.png"));
-//         thomasSpriteImageArray[5] = read(getClass().getResource("Thomas6.png"));
-//         thomasSpriteImageArray[6] = read(getClass().getResource("Thomas7.png"));
-//         thomasSpriteImageArray[7] = read(getClass().getResource("Thomas8.png"));
-//         reverseThomasImageArray[0] = read(getClass().getResource("Reversed Thomas1.png"));
-//         reverseThomasImageArray[1] = read(getClass().getResource("Reversed Thomas2.png"));
-//         reverseThomasImageArray[2] = read(getClass().getResource("Reversed Thomas3.png"));
-//         reverseThomasImageArray[3] = read(getClass().getResource("Reversed Thomas4.png"));
-//         reverseThomasImageArray[4] = read(getClass().getResource("Reversed Thomas5.png"));
-//         reverseThomasImageArray[5] = read(getClass().getResource("Reversed Thomas6.png"));
-//         reverseThomasImageArray[6] = read(getClass().getResource("Reversed Thomas7.png"));
-//         reverseThomasImageArray[7] = read(getClass().getResource("Reversed Thomas8.png"));
-//      } catch (IOException e)
-//      {
-//         System.out.println("error reading from thomas sprite array");
-//      }
-      roadImage = Toolkit.getDefaultToolkit().createImage(getClass().getResource("ground.png"));
-      trackImage = Toolkit.getDefaultToolkit().createImage(getClass().getResource("Tracks.png"));
-      roadWidth = roadImage.getWidth(null);
-      trackWidth = trackImage.getWidth(null);
-   }
-
-   /***********************************************************************************************
-    * Set up main JFrame
-    ***********************************************************************************************/
-   private void setUpMainGameWindow()
-   {
-      mainGameWindow.setTitle("Thomas the tank");
-      mainGameWindow.setSize(widthOfScreen, heightOfScreen);
-      mainGameWindow.add(this);// Adds the paint method to the JFrame
-      mainGameWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-      mainGameWindow.getContentPane().setBackground(new Color(200, 235, 255));
-      mainGameWindow.setVisible(true);
-      mainGameWindow.addKeyListener(this);
-   }
-
-   /***********************************************************************************************
-    * Check for intersections
-    ***********************************************************************************************/
-   public boolean testIntersection(Shape shapeA, Shape shapeB)
-   {
-	  Area areaA = null;
-	  Area areaB = null;
-      areaA = new Area(shapeA);
-      if (shapeB != null)// put this in to fix compile problem
-      {
-         areaB = new Area(shapeB);
-      }
-      areaA.transform(thomasTransform);
-      areaB.transform(upperTrackTransform);
-      if (shapeB != null)// put this in to fix compile problem
-      {
-         areaA.intersect(areaB);
-         System.out.println("intersect");
-      }
-      return !areaA.isEmpty();
-   }
 }
