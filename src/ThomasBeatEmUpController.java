@@ -106,7 +106,7 @@ public class ThomasBeatEmUpController extends JComponent implements ActionListen
 		drawThomas();
 		drawRoad();
 		drawObstacle();
-		drawTracks(0, heightOfScreen/2, 2);// ...Draw upper tracks left half
+		drawTracks(0, heightOfScreen/2, 3);// ...Draw upper tracks left half
 		drawTracks(0, heightOfScreen*3/4, 5);
 		if (testIntersection(thomasShape, upperTrackShape))
 		{
@@ -167,11 +167,11 @@ public class ThomasBeatEmUpController extends JComponent implements ActionListen
 		for (int i = 1; i <= numberOfTracks; i++)
 		{
 			g2.drawImage(trackImage, 0, 0, null);
-			upperTrackBox = new Rectangle(0, 0, trackWidth, trackYPos);
-			g2.translate(trackWidth, 0);
 			upperTrackWidth = trackImage.getWidth(null);
+			upperTrackBox = new Rectangle(0, 0, trackWidth, trackYPos);
 			upperTrackShape = upperTrackBox.getBounds();
 			upperTrackTransform = g2.getTransform();
+			g2.translate(trackWidth,0);
 		}
 	}
 
