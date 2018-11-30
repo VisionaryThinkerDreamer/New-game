@@ -11,7 +11,7 @@ public class Road
     {
         try
         {
-            roadImage = ImageIO.read(new File("/Users/VicMini/git/New-game/src/ground.png"));
+            roadImage = ImageIO.read(new File("/Users/davidfrieder/Desktop/New-game/New-game/src/ground.png"));
         } catch (IOException e)
         {
             System.out.println("Can't find ground.png");

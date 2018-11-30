@@ -1,60 +1,101 @@
-import static javax.imageio.ImageIO.read;
-
-import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.Rectangle;
-import java.awt.Shape;
-import java.awt.geom.AffineTransform;
+import java.awt.*;
+import java.awt.geom.Rectangle2D;
 import java.io.IOException;
+
+import static javax.imageio.ImageIO.read;
 
 public class Thomas
 {
-	int thomasBoxWidth;
-	int thomasBoxHeight;
-	Rectangle thomasBox;
-	Shape thomasShape;
-	private Image[] thomasSpriteImageArray = new Image[8];
-	private Image[] reverseThomasImageArray = new Image[8];
-	private AffineTransform thomasTransform = new AffineTransform();
-	private Image thomasSpriteImage;
-	private Image reverseThomasImage;
-	private int thomasSpriteImageCounter;
-	private int thomasMaxSpeed = 13;
-	private int thomasYOffsetFromGround = 0;
-	private Graphics2D g2;
+    public Image[] leftFacingThomasSpriteImageArray = new Image[8];
+    public Image[] rightFacingThomasSpriteImageArray = new Image[8];
+    private int thomasSpriteImageCounter;
+    private Rectangle2D.Double thomasBoundingBox;
+    private Point thomasPosition;
+    private Shape thomasBoundingBoxShape;
 
-	public Thomas()
-	{
-		System.out.println("running constructor");
-		 try
-	      {
-	         getThomasSpriteImageArray()[0] = read(getClass().getResource("Thomas1.png"));
-	         getThomasSpriteImageArray()[1] = read(getClass().getResource("Thomas2.png"));
-	         getThomasSpriteImageArray()[2] = read(getClass().getResource("Thomas3.png"));
-	         getThomasSpriteImageArray()[3] = read(getClass().getResource("Thomas4.png"));
-	         getThomasSpriteImageArray()[4] = read(getClass().getResource("Thomas5.png"));
-	         getThomasSpriteImageArray()[5] = read(getClass().getResource("Thomas6.png"));
-	         getThomasSpriteImageArray()[6] = read(getClass().getResource("Thomas7.png"));
-	         getThomasSpriteImageArray()[7] = read(getClass().getResource("Thomas8.png"));
-	         getReverseThomasImageArray()[0] = read(getClass().getResource("Reversed Thomas1.png"));
-	         getReverseThomasImageArray()[1] = read(getClass().getResource("Reversed Thomas2.png"));
-	         getReverseThomasImageArray()[2] = read(getClass().getResource("Reversed Thomas3.png"));
-	         getReverseThomasImageArray()[3] = read(getClass().getResource("Reversed Thomas4.png"));
-	         getReverseThomasImageArray()[4] = read(getClass().getResource("Reversed Thomas5.png"));
-	         getReverseThomasImageArray()[5] = read(getClass().getResource("Reversed Thomas6.png"));
-	         getReverseThomasImageArray()[6] = read(getClass().getResource("Reversed Thomas7.png"));
-	         getReverseThomasImageArray()[7] = read(getClass().getResource("Reversed Thomas8.png"));
-	      } catch (IOException e)
-	      {
-	         System.out.println("error reading from thomas sprite array");
-	      }
-	}
-	public Image[] getReverseThomasImageArray()
-	{
-		return reverseThomasImageArray;
-	}
-	public Image[] getThomasSpriteImageArray()
-	{
-		return thomasSpriteImageArray;
-	}
+    public Thomas(Point thomasPosition)
+    {
+        int thomasBoundingBoxWidth;
+        int thomasBoundingBoxHeight;
+        try
+        {
+            leftFacingThomasSpriteImageArray[0] = read(getClass().getResource("Thomas1.png"));
+            leftFacingThomasSpriteImageArray[1] = read(getClass().getResource("Thomas2.png"));
+            leftFacingThomasSpriteImageArray[2] = read(getClass().getResource("Thomas3.png"));
+            leftFacingThomasSpriteImageArray[3] = read(getClass().getResource("Thomas4.png"));
+            leftFacingThomasSpriteImageArray[4] = read(getClass().getResource("Thomas5.png"));
+            leftFacingThomasSpriteImageArray[5] = read(getClass().getResource("Thomas6.png"));
+            leftFacingThomasSpriteImageArray[6] = read(getClass().getResource("Thomas7.png"));
+            leftFacingThomasSpriteImageArray[7] = read(getClass().getResource("Thomas8.png"));
+            rightFacingThomasSpriteImageArray[0] = read(getClass().getResource("Reversed Thomas1.png"));
+            rightFacingThomasSpriteImageArray[1] = read(getClass().getResource("Reversed Thomas2.png"));
+            rightFacingThomasSpriteImageArray[2] = read(getClass().getResource("Reversed Thomas3.png"));
+            rightFacingThomasSpriteImageArray[3] = read(getClass().getResource("Reversed Thomas4.png"));
+            rightFacingThomasSpriteImageArray[4] = read(getClass().getResource("Reversed Thomas5.png"));
+            rightFacingThomasSpriteImageArray[5] = read(getClass().getResource("Reversed Thomas6.png"));
+            rightFacingThomasSpriteImageArray[6] = read(getClass().getResource("Reversed Thomas7.png"));
+            rightFacingThomasSpriteImageArray[7] = read(getClass().getResource("Reversed Thomas8.png"));
+            thomasBoundingBoxWidth = leftFacingThomasSpriteImageArray[0].getWidth(null);
+            thomasBoundingBoxHeight = leftFacingThomasSpriteImageArray[0].getHeight(null);
+            this.thomasPosition = thomasPosition;
+            thomasBoundingBox = new Rectangle2D.Double(thomasPosition.x + 80, thomasPosition.y, thomasBoundingBoxWidth-160, thomasBoundingBoxHeight);
+
+        } catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    public Image nextThomasSpriteImage(boolean goingRight, boolean goingLeft)
+    {
+        if (goingRight)
+        {
+            thomasSpriteImageCounter++;
+            thomasSpriteImageCounter = thomasSpriteImageCounter % 8;
+            return rightFacingThomasSpriteImageArray[thomasSpriteImageCounter];
+        }
+        if (goingLeft)
+        {
+        	thomasSpriteImageCounter++;
+            thomasSpriteImageCounter = thomasSpriteImageCounter % 8;
+            return leftFacingThomasSpriteImageArray[thomasSpriteImageCounter];
+        }
+        else{
+        	return null;
+        }
+    }
+
+    public Image[] getForwardThomasSpriteImageArray()
+    {
+        return leftFacingThomasSpriteImageArray;
+    }
+    
+    public Image[] getBackwardThomasSpriteImageArray()
+    {
+        return rightFacingThomasSpriteImageArray;
+    }
+
+    public void setThomasPosition(Point thomasPosition)
+    {
+        this.thomasPosition = thomasPosition;
+    }
+
+    public Point getThomasPosition()
+    {
+        return thomasPosition;
+    }
+
+
+    public Rectangle2D.Double getThomasBoundingBox()
+    {
+        return thomasBoundingBox;
+    }
+
+    public void setThomasBoundingBox(Rectangle2D.Double thomasBoundingBox)
+    {
+        this.thomasBoundingBox = thomasBoundingBox;
+        thomasBoundingBoxShape = thomasBoundingBox.getBounds();
+    }
 }
+
+

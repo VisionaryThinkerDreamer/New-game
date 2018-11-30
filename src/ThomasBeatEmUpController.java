@@ -1,4 +1,3 @@
-import javax.script.ScriptException;
 import javax.swing.*;
 import java.applet.AudioClip;
 import java.awt.*;
@@ -7,397 +6,233 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.geom.AffineTransform;
-import java.awt.geom.Area;
 import java.awt.geom.Rectangle2D;
-import java.io.IOException;
 import java.net.URL;
 
-import static javax.imageio.ImageIO.read;
-
 /***********************************************************************************************
- * David Frieder's Thomas Game Copyright 2018 David Frieder 11/10/2018 rev 3.4
- * 
- * Can create tracks wherever we want
- * Trying to consolidate track methods vic 10/9/2018
+ * David Frieder's Thomas Game Copyright 2018 David Frieder 11/30/2018
+ * Working on collision detection vic 11/12/2018  rev 4.1
  ***********************************************************************************************/
 public class ThomasBeatEmUpController extends JComponent implements ActionListener, Runnable, KeyListener
 {
-	public boolean isGoingRight = false;
-	int trackYPos;
-	int upperTrackWidth;
-	int lowerTrackYPos;
-	int lowerTrackWidth;
-	Rectangle upperTrackBox;
-	Shape upperTrackShape;
-	private Rectangle lowerTrackBox2;
-	private Shape lowerTrackShape;
-	private AffineTransform lowerTrackTransform;
-	int thomasBoxWidth;
-	int thomasBoxHeight;
-	Rectangle thomasBox;
-	Rectangle thomasTrackIntersectionBox;
-	Shape thomasShape;
-	private Rectangle2D.Double upperTrackDetectionZone = new Rectangle2D.Double(0, 0, 200, 49);
-	private URL thomasThemeAddress = getClass().getResource("ThomasThemeSong.wav");
-	private AudioClip thomasThemeSong = JApplet.newAudioClip(thomasThemeAddress);
-	private Image[] thomasSpriteImageArray = new Image[8];
-	private Image[] reverseThomasImageArray = new Image[8];
-	private Image gun = Toolkit.getDefaultToolkit().createImage(getClass().getResource("Minigun_SU.png"));
-	private int widthOfScreen = java.awt.Toolkit.getDefaultToolkit().getScreenSize().width;
-	private int heightOfScreen = java.awt.Toolkit.getDefaultToolkit().getScreenSize().height;
-	private JFrame mainGameWindow = new JFrame("NewGame");// Makes window with
-	private AffineTransform identityTx = new AffineTransform();
-	private AffineTransform thomasTransform = new AffineTransform();// Set
-	private AffineTransform backgroundTx = new AffineTransform();
-	private AffineTransform upperTrackTransform = new AffineTransform();
-	private Timer animationTicker = new Timer(40, this);
-	private Timer jumpingTicker = new Timer(800 / 60, this);
-	private Image thomasSpriteImage;
-	private Image reverseThomasImage;
-	private int thomasSpriteImageCounter;
-	private Image roadImage;
-	private int groundLevelTrackYPos = (int) (heightOfScreen * 0.809);
-	private boolean isGoingLeft;
-	private boolean isJumping;
-	private boolean isFalling;
-	private int initialJumpingVelocity = -31;
-	private int initialFallingVelocity = 0;
-	public int jumpingVelocity = initialJumpingVelocity;
-	public int fallingVelocity = initialFallingVelocity;
-	private int movingVelocity;
-	private int gravityAcceleration = 1;
-	private Graphics2D g2;
-	private int roadWidth;
-	private int trackWidth;
-	int trackHeight;
-	private int thomasYOffsetFromGround = 0;
-	private boolean lastWayFacing = true;
-	public Thomas thomas = new Thomas();
-	public Track track = new Track();
-	
+    private int widthOfScreen = java.awt.Toolkit.getDefaultToolkit().getScreenSize().width;
+    private int heightOfScreen = java.awt.Toolkit.getDefaultToolkit().getScreenSize().height;
+    private Point thomasHomePosition = new Point(widthOfScreen / 3, (heightOfScreen/3) * 2);
+    private Point mainTrackPosition = new Point(0, 842 * heightOfScreen / 1000);
+    private Point upperTrackPosition = new Point(0, 500 * heightOfScreen / 1000);
+    private Thomas thomas = new Thomas(thomasHomePosition);
+    private Track upperTrack = new Track(upperTrackPosition, 3);
+    private Track mainTrack = new Track(mainTrackPosition, 6);
+    private Road road = new Road();
+    private JFrame mainGameWindow = new JFrame("NewGame");// Makes window with
+    private AffineTransform identityTx = new AffineTransform();
+    private AffineTransform backgroundTx = new AffineTransform();
+    private Timer animationTicker = new Timer(30, this);
+    private boolean isGoingRight;
+    private boolean isGoingLeft;
+    private boolean isJumping;
+    private Graphics2D g2;
+    private URL thomasThemeAddress = getClass().getResource("ThomasThemeSong.wav");
+    private AudioClip thomasThemeSong = JApplet.newAudioClip(thomasThemeAddress);
+    private int initialJumpingVelocity = -44;
+    private int currentJumpingVelocity = initialJumpingVelocity;
+    private int gravitationalPull = 2;
 
-	/***********************************************************************************************
-	 * Main
-	 ***********************************************************************************************/
-	public static void main(String[] args)
-	{
-		SwingUtilities.invokeLater(new ThomasBeatEmUpController());
-	}
+    /***********************************************************************************************
+     * Main
+     ***********************************************************************************************/
+    public static void main(String[] args)
+    {
+        SwingUtilities.invokeLater(new ThomasBeatEmUpController());
+    }
 
-	/***********************************************************************************************
-	 * Run
-	 ***********************************************************************************************/
-	@Override
-	public void run()
-	{
-		loadImages();
-		setUpMainGameWindow();
-		thomasThemeSong.loop();
-		animationTicker.start();
-		jumpingTicker.start();
-	}
+    /***********************************************************************************************
+     * Run
+     ***********************************************************************************************/
+    @Override
+    public void run()
+    {
+        setUpMainGameWindow();
+        thomasThemeSong.loop(); //UN-COMMENT THIS TO MAKE THE THEME MUSIC PLAY
+        animationTicker.start();
+    }
 
-	/***********************************************************************************************
-	 * Paint
-	 ***********************************************************************************************/
-	public void paint(Graphics g)
-	{
-		g2 = (Graphics2D) g;
-		drawThomas();
-		drawRoad();
-		drawObstacle();
-		drawTracks(0, heightOfScreen/2, 3);// ...Draw upper tracks left half
-		drawTracks(0, heightOfScreen*3/4, 5);
-		if (testIntersection(thomasShape, upperTrackShape))
-		{
-			if (jumpingVelocity > 0 && thomasYOffsetFromGround < trackYPos)
-			{
-				jumpingVelocity = initialJumpingVelocity;
-				isJumping = false;
-				isFalling = false;
-				g2.setTransform(thomasTransform);
-			}
-		} else if (testIntersection(thomasShape, upperTrackShape) == false)
-		{
-			isFalling = true;
-			if (thomasYOffsetFromGround > 0)
-			{
-				jumpingVelocity = initialJumpingVelocity;
-				thomasYOffsetFromGround = 0;
-				isJumping = false;
-			}
-			repaint();
-		}
-	}
+    /***********************************************************************************************
+     * Set up main JFrame
+     ***********************************************************************************************/
+    private void setUpMainGameWindow()
+    {
+        mainGameWindow.setTitle("Thomas the tank");
+        mainGameWindow.setSize(widthOfScreen, heightOfScreen);
+        mainGameWindow.add(this);// Adds the paint method to the JFrame
+        mainGameWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        mainGameWindow.getContentPane().setBackground(new Color(200, 235, 255));
+        mainGameWindow.setVisible(true);
+        mainGameWindow.addKeyListener(this);
+    }
 
-	private void drawObstacle()
-	{
-		g2.setTransform(backgroundTx);
-		g2.translate(-widthOfScreen, heightOfScreen - 400);
-		g2.scale(1.5, 1.5);
-		g2.fillRect(0, 0, 500, 300);
-	}
+    /***********************************************************************************************
+     * Paint
+     ***********************************************************************************************/
+    public void paint(Graphics g)
+    {
+        g2 = (Graphics2D) g;
+        g2.setTransform(identityTx);
+        drawThomas();
+        g2.setTransform(backgroundTx);
+        drawRoad();
+        drawObstacle();
+        drawTracks(mainTrack);
+        drawTracks(upperTrack);
+        if (thomas.getThomasBoundingBox().intersects(upperTrack.getTrackBoundingBox()))
+        {
+            g2.fillOval(500, 500, 50, 50);
+        }
+    }
 
-	/***********************************************************************************************
-	 * Draw road
-	 ***********************************************************************************************/
-	private void drawRoad()
-	{
-		g2.setTransform(backgroundTx);
-		g2.translate(-widthOfScreen, heightOfScreen - 200);
-		g2.scale(1.5, 1.5);
-		for (int i = 0; i < (2 * (widthOfScreen / roadImage.getWidth(null))) + 2; i++) // fits
-		{
-			g2.drawImage(roadImage, 0, 0, null);
-			g2.translate(roadImage.getWidth(null), 0);
-		}
-	}
+    private void drawObstacle()
+    {
+        g2.setTransform(backgroundTx);
+        g2.translate(-widthOfScreen, heightOfScreen - 400);
+        g2.fillRect(0, 0, 500, 300);
+    }
 
-	/***********************************************************************************************
-	 * Draw any tracks
-	 ***********************************************************************************************/
-	private void drawTracks(double trackXPos, int trackYPos, int numberOfTracks)
-	{
-		Image trackImage = track.getTrackImage();
-		trackWidth = trackImage.getWidth(null);
-		trackHeight = trackImage.getHeight(null);
-		g2.setTransform(backgroundTx);// this is an identity transform
-		g2.translate(trackXPos, trackYPos); // center in screen
-		g2.scale(1.5, 1.5);
-		for (int i = 1; i <= numberOfTracks; i++)
-		{
-			g2.drawImage(trackImage, 0, 0, null);
-			upperTrackWidth = trackImage.getWidth(null);
-			upperTrackBox = new Rectangle(0, 0, trackWidth, trackYPos);
-			upperTrackShape = upperTrackBox.getBounds();
-			upperTrackTransform = g2.getTransform();
-			g2.translate(trackWidth,0);
-		}
-	}
+    /***********************************************************************************************
+     * Draw road
+     ***********************************************************************************************/
+    private void drawRoad()
+    {
+        Image roadImage = road.getRoadImage();
+        int roadImageWidth = roadImage.getWidth(null);
+        for (int i = 0; i < 1 + widthOfScreen / roadImageWidth; i++)
+        {
+            g2.drawImage(roadImage, i * roadImageWidth, 85 * heightOfScreen / 100, null);
+        }
+    }
 
-	/***********************************************************************************************
-	 * Draw Thomas with sprite files
-	 ***********************************************************************************************/
-	public void drawThomas()
-	{
-		g2.setTransform(backgroundTx);
-		thomasTransform.setToTranslation(widthOfScreen / 3, heightOfScreen - 420);
-		g2.setTransform(thomasTransform);
-		try
-		{
-			thomasSpriteImageArray = thomas.getThomasSpriteImageArray();
-			reverseThomasImageArray = thomas.getReverseThomasImageArray();
-			thomasSpriteImageCounter = thomasSpriteImageCounter % 8;
-			thomasSpriteImage = thomasSpriteImageArray[thomasSpriteImageCounter];
-			reverseThomasImage = reverseThomasImageArray[thomasSpriteImageCounter];
-			thomasTransform.setToTranslation(widthOfScreen / 3, heightOfScreen - 420 + thomasYOffsetFromGround);
-			g2.setTransform(thomasTransform);
-			thomasBox = new Rectangle(0, 0, thomasBoxWidth, thomasBoxHeight);
-			thomasTrackIntersectionBox = new Rectangle(0, thomasBoxHeight, thomasBoxWidth, -thomasBoxHeight/5);
-			thomasShape = thomasBox.getBounds();
+    /***********************************************************************************************
+     * Draw tracks
+     ***********************************************************************************************/
+    private void drawTracks(Track track)
+    {
+        Image trackSectionImage = track.getTrackSectionImage();
+        int trackSectionWidth = trackSectionImage.getWidth(null);
+        int trackSectionHeight = trackSectionImage.getHeight(null);
+        Point trackPosition = track.getTrackPosition();
+        int trackYposition = trackPosition.y;
+        Rectangle2D.Double trackBoundingBox = new Rectangle2D.Double(trackPosition.x, trackPosition.y, trackSectionWidth, trackSectionHeight);
+        g2.setTransform(backgroundTx);
+        g2.setColor(Color.green);
+        for (int i = 0; i < track.getNumberOfTrackSections(); i++)
+        {
+            g2.drawImage(trackSectionImage, i * trackSectionWidth, trackYposition, null);
+            g2.draw(trackBoundingBox);
+        }
+    }
 
-			if (isGoingLeft || lastWayFacing == true)
-			{
-				g2.drawImage(thomasSpriteImage, 0, 0, null);
-				lastWayFacing = true;
-				thomasBoxWidth = thomasSpriteImage.getWidth(null);
-				thomasBoxHeight = thomasSpriteImage.getHeight(null);
-			}
-			if (isGoingRight || lastWayFacing == false)
-			{
-				g2.drawImage(reverseThomasImage, 0, 0, null);
-				lastWayFacing = false;
-				thomasBoxWidth = thomasSpriteImage.getWidth(null);
-				thomasBoxHeight = thomasSpriteImage.getHeight(null);
-			}
-		} catch (Exception ex)
-		{
-			System.out.println("error reading thomas thomasSpriteImage from thomas sprite thomasSpriteImage array");
-		}
-	}
+    /***********************************************************************************************
+     * Draw Thomas
+     ***********************************************************************************************/
+    public void drawThomas()
+    {
+        g2.setTransform(identityTx);
+        g2.setColor(Color.GREEN);
+        try
+        {
+            Image thomasSpriteImage = thomas.getForwardThomasSpriteImageArray()[0];
+            if (isGoingLeft)// Thomas going left
+            {
+                thomasSpriteImage = thomas.nextThomasSpriteImage(false, isGoingLeft);
+            }
+            if (isGoingRight)// Thomas going right
+            {
+                thomasSpriteImage = thomas.nextThomasSpriteImage(true, isGoingLeft);
+            }
+            if (isJumping)
+            {
+                thomas.getThomasPosition().translate(0, currentJumpingVelocity); // Move Thomas up
+                currentJumpingVelocity += gravitationalPull;
+                thomas.setThomasBoundingBox(new Rectangle2D.Double(thomas.getThomasBoundingBox().x, thomas.getThomasBoundingBox().y - 30, thomas.getThomasBoundingBox().width, thomas.getThomasBoundingBox().height));
 
-	/***********************************************************************************************
-	 * Get .png files, convert to Image and load sprite array
-	 ***********************************************************************************************/
-	private void loadImages()
-	{
-		roadImage = Toolkit.getDefaultToolkit().createImage(getClass().getResource("ground.png"));
+            }
+            if (!isJumping && thomas.getThomasPosition().y < (mainTrackPosition.getY()-thomasSpriteImage.getHeight(mainGameWindow)))
+            {
+	                thomas.getThomasPosition().translate(0, +30);  // Move Thomas down
+	                thomas.setThomasBoundingBox(new Rectangle2D.Double(thomas.getThomasBoundingBox().x, thomas.getThomasBoundingBox().y + 30, thomas.getThomasBoundingBox().width, thomas.getThomasBoundingBox().height));
+            }
+            g2.drawImage(thomasSpriteImage, thomas.getThomasPosition().x, thomas.getThomasPosition().y, null);
+            g2.draw(thomas.getThomasBoundingBox());
+        } catch (Exception ex)
+        {
+            System.out.println("error reading thomas thomasSpriteImage from thomas sprite thomasSpriteImage array");
+        }
+    }
 
-		roadWidth = roadImage.getWidth(null);
-	}
+    /***********************************************************************************************
+     * Respond to key typed...Not being used
+     ***********************************************************************************************/
+    @Override
+    public void keyTyped(KeyEvent e)
+    {
+    }
 
-	/***********************************************************************************************
-	 * Set up main JFrame
-	 ***********************************************************************************************/
-	private void setUpMainGameWindow()
-	{
-		mainGameWindow.setTitle("Thomas the tank");
-		mainGameWindow.setSize(widthOfScreen, heightOfScreen);
-		mainGameWindow.add(this);// Adds the paint method to the JFrame
-		mainGameWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		mainGameWindow.getContentPane().setBackground(new Color(200, 235, 255));
-		mainGameWindow.setVisible(true);
-		mainGameWindow.addKeyListener(this);
-	}
+    /***********************************************************************************************
+     * Respond to key pressed
+     ***********************************************************************************************/
+    @Override
+    public void keyPressed(KeyEvent e)
+    {
+        if (e.getKeyCode() == KeyEvent.VK_RIGHT) // going right
+        {
+            isGoingRight = true;
+            isGoingLeft = false;
+        }
+        if (e.getKeyCode() == KeyEvent.VK_LEFT) // going left
+        {
+            isGoingLeft = true;
+            isGoingRight = false;
+        }
+        if (e.getKeyCode() == KeyEvent.VK_UP)
+        {
+            isJumping = true;
+        }
+    }
 
-	/***********************************************************************************************
-	 * Check for intersections
-	 ***********************************************************************************************/
-	public boolean testIntersection(Shape shapeA, Shape shapeB)
-	{
-		Area areaA = null;
-		Area areaB = null;
-		areaA = new Area(shapeA);
-		if (shapeB != null)// put this in to fix compile problem
-		{
-			areaB = new Area(shapeB);
-		}
-		areaA.transform(thomasTransform);
-		areaB.transform(upperTrackTransform);
-		if (shapeB != null)// put this in to fix compile problem
-		{
-			areaA.intersect(areaB);
-		}
-		return !areaA.isEmpty();
-	}
+    /***********************************************************************************************
+     * Respond to key released
+     ***********************************************************************************************/
+    @Override
+    public void keyReleased(KeyEvent e)
+    {
+        if (e.getKeyCode() == KeyEvent.VK_RIGHT) // going right
+        {
+            isGoingRight = false;
+        }
+        if (e.getKeyCode() == KeyEvent.VK_LEFT) // going left
+        {
+            isGoingLeft = false;
+        }
+        if (e.getKeyCode() == KeyEvent.VK_UP)
+        {
+            isJumping = false;
+        }
+    }
 
-	/***********************************************************************************************
-	 * Respond to key typed
-	 ***********************************************************************************************/
-	@Override
-	public void keyTyped(KeyEvent e)
-	{
-	}
+    /***********************************************************************************************
+     * Action Performed.....Respond to animation ticker and paint ticker
+     ***********************************************************************************************/
+    @Override
+    public void actionPerformed(ActionEvent e)
+    {
+        if (isGoingLeft)
+        {
+            backgroundTx.translate(+30, 0); // Move background right
+        }
+        if (isGoingRight)
+        {
+            backgroundTx.translate(-30, 0); // Move backgound left
+        }
 
-	/***********************************************************************************************
-	 * Respond to key pressed
-	 ***********************************************************************************************/
-	@Override
-	public void keyPressed(KeyEvent e)
-	{
-		if (e.getKeyCode() == KeyEvent.VK_RIGHT) // going right
-		{
-			isGoingRight = true;
-			isGoingLeft = false;
-		}
-		if (e.getKeyCode() == KeyEvent.VK_LEFT) // going left
-		{
-			isGoingLeft = true;
-			isGoingRight = false;
-			animationTicker.start();
-		}
-		if (e.getKeyCode() == KeyEvent.VK_LEFT && e.getKeyCode() == KeyEvent.VK_RIGHT)
-		{
-			isGoingLeft = false;
-			isGoingRight = false;
-		}
-		if (e.getKeyCode() == KeyEvent.VK_UP)
-		{
-			isJumping = true;
-		}
-	}
-
-	/***********************************************************************************************
-	 * Respond to key released
-	 ***********************************************************************************************/
-	@Override
-	public void keyReleased(KeyEvent e)
-	{
-		if (e.getKeyCode() == KeyEvent.VK_RIGHT) // going right
-		{
-			isGoingRight = false;
-		}
-		if (e.getKeyCode() == KeyEvent.VK_LEFT) // going left
-		{
-			isGoingLeft = false;
-		}
-		if (e.getKeyCode() == KeyEvent.VK_UP)
-		{
-		}
-	}
-
-	/***********************************************************************************************
-	 * Action Performed.....Respond to animation ticker and paint ticker
-	 ***********************************************************************************************/
-	@Override
-	public void actionPerformed(ActionEvent e)
-	{
-		repaint();
-		thomasTransform.setToTranslation(0, thomasYOffsetFromGround);
-		if (e.getSource() == animationTicker)
-		{
-			if (isGoingLeft == true)
-			{
-				thomasSpriteImageCounter++;
-				backgroundTx.setToTranslation(backgroundTx.getTranslateX() + 20, 0);
-				if (backgroundTx.getTranslateX() > widthOfScreen)
-				{
-					// backgroundTx.setToTranslation(-widthOfScreen, 0);
-				}
-			}
-			if (isGoingRight == true)
-			{
-				thomasSpriteImageCounter++;
-				if (thomasSpriteImageCounter < 0)
-				{
-					thomasSpriteImageCounter = 7;
-				}
-				backgroundTx.setToTranslation(backgroundTx.getTranslateX() - 20, 0);
-				if (backgroundTx.getTranslateX() < -widthOfScreen)
-				{
-					// backgroundTx.setToTranslation(widthOfScreen, 0);
-				}
-			}
-			repaint();
-		}
-		if (isJumping == true)
-		{
-			jump(e);
-		}
-		if (isFalling == true)
-		{
-			fall(e);
-		}
-	}
-
-	public void jump(ActionEvent e)
-	{
-		if (e.getSource() == jumpingTicker)
-		{
-			if (g2 != null)
-			{
-				thomasYOffsetFromGround += jumpingVelocity;
-				jumpingVelocity += gravityAcceleration;
-			}
-			if (thomasYOffsetFromGround > 0)
-			{
-				jumpingVelocity = initialJumpingVelocity;
-				thomasYOffsetFromGround = 0;
-				isJumping = false;
-				isFalling = false;
-			}
-			repaint();
-		}
-	}
-	public void fall(ActionEvent e)
-	{
-		if (e.getSource() == jumpingTicker && !isJumping)
-		{
-			if (g2 != null)
-			{
-				thomasYOffsetFromGround += fallingVelocity;
-				fallingVelocity += gravityAcceleration;
-			}
-			if ((thomasYOffsetFromGround > 0 || testIntersection(thomasShape, upperTrackShape)))
-			{
-				fallingVelocity = initialFallingVelocity;
-				thomasYOffsetFromGround = 0;
-				isFalling = false;
-				isJumping = false;
-			}
-			isFalling = false;
-			repaint();
-		}
-	}
-
+        repaint();
+    }
 }
