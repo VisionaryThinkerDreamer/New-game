@@ -34,6 +34,11 @@ public class Track
     {
         return trackSectionImage;
     }
+    
+    public int getTrackSectionHeight()
+    {
+    	return trackSectionImage.getHeight(null);
+    }
 
     public Point getTrackPosition()
     {

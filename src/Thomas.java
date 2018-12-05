@@ -65,12 +65,12 @@ public class Thomas
         }
     }
 
-    public Image[] getForwardThomasSpriteImageArray()
+    public Image[] getLeftThomasSpriteImageArray()
     {
         return leftFacingThomasSpriteImageArray;
     }
     
-    public Image[] getBackwardThomasSpriteImageArray()
+    public Image[] getRightThomasSpriteImageArray()
     {
         return rightFacingThomasSpriteImageArray;
     }

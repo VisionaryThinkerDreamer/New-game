@@ -17,12 +17,12 @@ public class ThomasBeatEmUpController extends JComponent implements ActionListen
 {
     private int widthOfScreen = java.awt.Toolkit.getDefaultToolkit().getScreenSize().width;
     private int heightOfScreen = java.awt.Toolkit.getDefaultToolkit().getScreenSize().height;
-    private Point thomasHomePosition = new Point(widthOfScreen / 3, (heightOfScreen/3) * 2);
     private Point mainTrackPosition = new Point(0, 842 * heightOfScreen / 1000);
-    private Point upperTrackPosition = new Point(0, 500 * heightOfScreen / 1000);
-    private Thomas thomas = new Thomas(thomasHomePosition);
-    private Track upperTrack = new Track(upperTrackPosition, 3);
     private Track mainTrack = new Track(mainTrackPosition, 6);
+    private Point thomasHomePosition = new Point(widthOfScreen/3, (2 * heightOfScreen/3)-mainTrack.getTrackSectionHeight());
+    private Point upperTrackPosition = new Point(0, 500 * heightOfScreen / 1000);
+    private Thomas thomas = new Thomas(new Point(widthOfScreen/3, (2 * heightOfScreen/3)-mainTrack.getTrackSectionHeight()));
+    private Track upperTrack = new Track(upperTrackPosition, 3);
     private Road road = new Road();
     private JFrame mainGameWindow = new JFrame("NewGame");// Makes window with
     private AffineTransform identityTx = new AffineTransform();
@@ -35,8 +35,10 @@ public class ThomasBeatEmUpController extends JComponent implements ActionListen
     private URL thomasThemeAddress = getClass().getResource("ThomasThemeSong.wav");
     private AudioClip thomasThemeSong = JApplet.newAudioClip(thomasThemeAddress);
     private int initialJumpingVelocity = -44;
-    private int currentJumpingVelocity = initialJumpingVelocity;
+    public int currentJumpingVelocity = initialJumpingVelocity;
     private int gravitationalPull = 2;
+    Image thomasSpriteImage = thomas.getLeftThomasSpriteImageArray()[0];
+
 
     /***********************************************************************************************
      * Main
@@ -89,14 +91,12 @@ public class ThomasBeatEmUpController extends JComponent implements ActionListen
             g2.fillOval(500, 500, 50, 50);
         }
     }
-
     private void drawObstacle()
     {
         g2.setTransform(backgroundTx);
         g2.translate(-widthOfScreen, heightOfScreen - 400);
         g2.fillRect(0, 0, 500, 300);
     }
-
     /***********************************************************************************************
      * Draw road
      ***********************************************************************************************/
@@ -139,7 +139,6 @@ public class ThomasBeatEmUpController extends JComponent implements ActionListen
         g2.setColor(Color.GREEN);
         try
         {
-            Image thomasSpriteImage = thomas.getForwardThomasSpriteImageArray()[0];
             if (isGoingLeft)// Thomas going left
             {
                 thomasSpriteImage = thomas.nextThomasSpriteImage(false, isGoingLeft);
@@ -152,13 +151,24 @@ public class ThomasBeatEmUpController extends JComponent implements ActionListen
             {
                 thomas.getThomasPosition().translate(0, currentJumpingVelocity); // Move Thomas up
                 currentJumpingVelocity += gravitationalPull;
+//                System.out.println(thomasHomePosition);
                 thomas.setThomasBoundingBox(new Rectangle2D.Double(thomas.getThomasBoundingBox().x, thomas.getThomasBoundingBox().y - 30, thomas.getThomasBoundingBox().width, thomas.getThomasBoundingBox().height));
-
+                if(thomas.getThomasPosition().y > thomasHomePosition.getY())
+                {
+                	//TODO: find out what is changing ThomasHomePosition
+                	thomas.setThomasPosition(thomasHomePosition);
+//                	System.out.println("isJumping = false");
+                	currentJumpingVelocity = initialJumpingVelocity;
+                	isJumping = false;
+                }
             }
             if (!isJumping && thomas.getThomasPosition().y < (mainTrackPosition.getY()-thomasSpriteImage.getHeight(mainGameWindow)))
             {
+            	currentJumpingVelocity = 0;
+            	thomas.getThomasPosition().translate(0, currentJumpingVelocity); // Move Thomas up
+                currentJumpingVelocity += gravitationalPull;
 	                thomas.getThomasPosition().translate(0, +30);  // Move Thomas down
-	                thomas.setThomasBoundingBox(new Rectangle2D.Double(thomas.getThomasBoundingBox().x, thomas.getThomasBoundingBox().y + 30, thomas.getThomasBoundingBox().width, thomas.getThomasBoundingBox().height));
+	                thomas.setThomasBoundingBox(new Rectangle2D.Double(thomas.getThomasBoundingBox().x, thomas.getThomasBoundingBox().y, thomas.getThomasBoundingBox().width, thomas.getThomasBoundingBox().height));
             }
             g2.drawImage(thomasSpriteImage, thomas.getThomasPosition().x, thomas.getThomasPosition().y, null);
             g2.draw(thomas.getThomasBoundingBox());
@@ -214,7 +224,7 @@ public class ThomasBeatEmUpController extends JComponent implements ActionListen
         }
         if (e.getKeyCode() == KeyEvent.VK_UP)
         {
-            isJumping = false;
+//            isJumping = false;
         }
     }
 
