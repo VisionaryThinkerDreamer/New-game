@@ -7,7 +7,7 @@ import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.io.IOException;
 
-public class OriginalThomas
+public class DavidsThomas
 {
 	int thomasBoxWidth;
 	int thomasBoxHeight;
@@ -23,7 +23,7 @@ public class OriginalThomas
 	private int thomasYOffsetFromGround = 0;
 	private Graphics2D g2;
 
-	public OriginalThomas()
+	public DavidsThomas()
 	{
 		System.out.println("running constructor");
 		 try

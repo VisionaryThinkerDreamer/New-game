@@ -22,8 +22,9 @@ import static javax.imageio.ImageIO.read;
  * Can create tracks wherever we want
  * Trying to consolidate track methods vic 10/9/2018
  ***********************************************************************************************/
-public class OriginalThomasController extends JComponent implements ActionListener, Runnable, KeyListener
+public class DavidsBeatEmUpController extends JComponent implements ActionListener, Runnable, KeyListener
 {
+	public Point upperTrackPosition = new Point(250, 300);
 	public boolean isGoingRight = false;
 	int trackYPos;
 	int upperTrackWidth;
@@ -74,8 +75,9 @@ public class OriginalThomasController extends JComponent implements ActionListen
 	int trackHeight;
 	private int thomasYOffsetFromGround = 0;
 	private boolean lastWayFacing = true;
-	public OriginalThomas thomas = new OriginalThomas();
-	public OriginalTrack track = new OriginalTrack();
+	public DavidsThomas thomas = new DavidsThomas();
+	public DavidsTrack upperTrack = new DavidsTrack(upperTrackPosition);
+	
 	
 
 	/***********************************************************************************************
@@ -83,7 +85,7 @@ public class OriginalThomasController extends JComponent implements ActionListen
 	 ***********************************************************************************************/
 	public static void main(String[] args)
 	{
-		SwingUtilities.invokeLater(new OriginalThomasController());
+		SwingUtilities.invokeLater(new DavidsBeatEmUpController());
 	}
 
 	/***********************************************************************************************
@@ -160,7 +162,7 @@ public class OriginalThomasController extends JComponent implements ActionListen
 	 ***********************************************************************************************/
 	private void drawTracks(double trackXPos, int trackYPos, int numberOfTracks)
 	{
-		Image trackImage = track.getTrackImage();
+		Image trackImage = upperTrack.getTrackImage();
 		trackWidth = trackImage.getWidth(null);
 		trackHeight = trackImage.getHeight(null);
 		g2.setTransform(backgroundTx);// this is an identity transform
