@@ -1,7 +1,9 @@
 
-
 import javax.script.ScriptException;
 import javax.swing.*;
+
+import org.omg.Messaging.SyncScopeHelper;
+
 import java.applet.AudioClip;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -19,8 +21,8 @@ import static javax.imageio.ImageIO.read;
 /***********************************************************************************************
  * David Frieder's Thomas Game Copyright 2018 David Frieder 11/10/2018 rev 3.4
  * 
- * Can create tracks wherever we want
- * Trying to consolidate track methods vic 10/9/2018
+ * Can create tracks wherever we want Trying to consolidate track methods vic
+ * 10/9/2018
  ***********************************************************************************************/
 public class DavidsBeatEmUpController extends JComponent implements ActionListener, Runnable, KeyListener
 {
@@ -32,24 +34,26 @@ public class DavidsBeatEmUpController extends JComponent implements ActionListen
 	int lowerTrackWidth;
 	Rectangle upperTrackBox;
 	Shape upperTrackShape;
-//	private Rectangle lowerTrackBox2;
-//	private Shape lowerTrackShape;
-//	private AffineTransform lowerTrackTransform;
+	// private Rectangle lowerTrackBox2;
+	// private Shape lowerTrackShape;
+	// private AffineTransform lowerTrackTransform;
 	int thomasBoxWidth;
 	int thomasBoxHeight;
 	Rectangle thomasBox;
 	Rectangle thomasTrackIntersectionBox;
 	Shape thomasShape;
-//	private Rectangle2D.Double upperTrackDetectionZone = new Rectangle2D.Double(0, 0, 200, 49);
+	// private Rectangle2D.Double upperTrackDetectionZone = new
+	// Rectangle2D.Double(0, 0, 200, 49);
 	private URL thomasThemeAddress = getClass().getResource("ThomasThemeSong.wav");
 	private AudioClip thomasThemeSong = JApplet.newAudioClip(thomasThemeAddress);
 	private Image[] thomasSpriteImageArray = new Image[8];
 	private Image[] reverseThomasImageArray = new Image[8];
-//	private Image gun = Toolkit.getDefaultToolkit().createImage(getClass().getResource("Minigun_SU.png"));
+	// private Image gun =
+	// Toolkit.getDefaultToolkit().createImage(getClass().getResource("Minigun_SU.png"));
 	private int widthOfScreen = java.awt.Toolkit.getDefaultToolkit().getScreenSize().width;
 	private int heightOfScreen = java.awt.Toolkit.getDefaultToolkit().getScreenSize().height;
 	private JFrame mainGameWindow = new JFrame("NewGame");// Makes window with
-//	private AffineTransform identityTx = new AffineTransform();
+	// private AffineTransform identityTx = new AffineTransform();
 	private AffineTransform thomasTransform = new AffineTransform();// Set
 	private AffineTransform backgroundTx = new AffineTransform();
 	private AffineTransform upperTrackTransform = new AffineTransform();
@@ -59,7 +63,7 @@ public class DavidsBeatEmUpController extends JComponent implements ActionListen
 	private Image reverseThomasImage;
 	private int thomasSpriteImageCounter;
 	private Image roadImage;
-//	private int groundLevelTrackYPos = (int) (heightOfScreen * 0.809);
+	// private int groundLevelTrackYPos = (int) (heightOfScreen * 0.809);
 	private boolean isGoingLeft;
 	private boolean isJumping;
 	private boolean isFalling;
@@ -67,7 +71,7 @@ public class DavidsBeatEmUpController extends JComponent implements ActionListen
 	private int initialFallingVelocity = 0;
 	public int jumpingVelocity = initialJumpingVelocity;
 	public int fallingVelocity = initialFallingVelocity;
-//	private int movingVelocity;
+	// private int movingVelocity;
 	private int gravityAcceleration = 1;
 	private Graphics2D g2;
 	private int roadWidth;
@@ -77,8 +81,6 @@ public class DavidsBeatEmUpController extends JComponent implements ActionListen
 	private boolean lastWayFacing = true;
 	public DavidsThomas thomas = new DavidsThomas();
 	public DavidsTrack upperTrack = new DavidsTrack(upperTrackPosition);
-	
-	
 
 	/***********************************************************************************************
 	 * Main
@@ -110,8 +112,8 @@ public class DavidsBeatEmUpController extends JComponent implements ActionListen
 		drawThomas();
 		drawRoad();
 		drawObstacle();
-		drawTracks(0, heightOfScreen/2, 3);// ...Draw upper tracks left half
-		drawTracks(0, heightOfScreen*3/4, 5);
+		drawTracks(0, heightOfScreen / 2, 3);// ...Draw upper tracks left half
+		drawTracks(0, 3 * heightOfScreen / 4, 5);
 		if (testIntersection(thomasShape, upperTrackShape))
 		{
 			if (jumpingVelocity > 0 && thomasYOffsetFromGround < trackYPos)
@@ -138,8 +140,7 @@ public class DavidsBeatEmUpController extends JComponent implements ActionListen
 	{
 		g2.setTransform(backgroundTx);
 		g2.translate(-widthOfScreen, heightOfScreen - 400);
-		g2.scale(1.5, 1.5);
-		g2.fillRect(0, 0, 500, 300);
+		g2.fillRect(-200, 0, 50, 300);
 	}
 
 	/***********************************************************************************************
@@ -154,6 +155,15 @@ public class DavidsBeatEmUpController extends JComponent implements ActionListen
 		{
 			g2.drawImage(roadImage, 0, 0, null);
 			g2.translate(roadImage.getWidth(null), 0);
+		}
+		if (Math.abs(backgroundTx.getTranslateX()) > 4000)
+		{
+			System.out.println("activated");
+			for (int i = 0; i < 3; i++)
+			{
+				g2.drawImage(roadImage, 0, 0, null);
+				g2.drawOval(0, 0, 50, 50);
+			}
 		}
 	}
 
@@ -175,7 +185,7 @@ public class DavidsBeatEmUpController extends JComponent implements ActionListen
 			upperTrackBox = new Rectangle(0, 0, trackWidth, trackYPos);
 			upperTrackShape = upperTrackBox.getBounds();
 			upperTrackTransform = g2.getTransform();
-			g2.translate(trackWidth,0);
+			g2.translate(trackWidth, 0);
 		}
 	}
 
@@ -197,7 +207,7 @@ public class DavidsBeatEmUpController extends JComponent implements ActionListen
 			thomasTransform.setToTranslation(widthOfScreen / 3, heightOfScreen - 420 + thomasYOffsetFromGround);
 			g2.setTransform(thomasTransform);
 			thomasBox = new Rectangle(0, 0, thomasBoxWidth, thomasBoxHeight);
-			thomasTrackIntersectionBox = new Rectangle(0, thomasBoxHeight, thomasBoxWidth, -thomasBoxHeight/5);
+			thomasTrackIntersectionBox = new Rectangle(0, thomasBoxHeight, thomasBoxWidth, -thomasBoxHeight / 5);
 			thomasShape = thomasBox.getBounds();
 
 			if (isGoingLeft || lastWayFacing == true)
@@ -352,6 +362,7 @@ public class DavidsBeatEmUpController extends JComponent implements ActionListen
 					// backgroundTx.setToTranslation(widthOfScreen, 0);
 				}
 			}
+			System.out.println(backgroundTx.getTranslateX());
 			repaint();
 		}
 		if (isJumping == true)
@@ -402,6 +413,18 @@ public class DavidsBeatEmUpController extends JComponent implements ActionListen
 			isFalling = false;
 			repaint();
 		}
+	}
+	public void getScreenHeight()
+	{
+		int heightOfScreen = this.heightOfScreen;
+	}
+	public void getScreenWidth()
+	{
+		int widthOfScreen = this.widthOfScreen;
+	}
+	public void getBackGroundTx()
+	{
+		AffineTransform backgroundTx = this.backgroundTx;
 	}
 
 }
