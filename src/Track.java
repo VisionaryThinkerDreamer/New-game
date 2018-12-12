@@ -11,24 +11,7 @@ public class Track
     private Rectangle2D.Double trackBoundingBox;
     private int numberOfTrackSections;
 
-    public Track(Point trackPosition, int numberOfTrackSections)
-    {
-        try
-        {
-            trackSectionImage = ImageIO.read(new File("/Users/davidfrieder/Desktop/New-game/New-game/src/Tracks.png"));
-
-        } catch (IOException e)
-        {
-            System.out.println("Can't find Tracks.png");
-        }
-        int trackXposition = trackPosition.x;
-        int trackYposition = trackPosition.y;
-        int trackSectionWidth = trackSectionImage.getWidth(null);
-        int trackSectionHeight = trackSectionImage.getHeight(null);
-        trackBoundingBox = new Rectangle2D.Double(trackXposition, trackYposition, trackSectionWidth * numberOfTrackSections, trackSectionHeight);
-        this.trackPosition = trackPosition;
-        this.numberOfTrackSections = numberOfTrackSections;
-    }
+   
 
     public Image getTrackSectionImage()
     {
@@ -55,5 +38,4 @@ public class Track
         return trackBoundingBox;
     }
 }
-
 
