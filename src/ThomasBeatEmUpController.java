@@ -18,11 +18,11 @@ public class ThomasBeatEmUpController extends JComponent implements ActionListen
     private int widthOfScreen = java.awt.Toolkit.getDefaultToolkit().getScreenSize().width;
     private int heightOfScreen = java.awt.Toolkit.getDefaultToolkit().getScreenSize().height;
     private Point mainTrackPosition = new Point(0, 842 * heightOfScreen / 1000);
-    private Track mainTrack = new Track(mainTrackPosition, 6);
+    private Track mainTrack = new Track();
     private Point thomasHomePosition = new Point(widthOfScreen/3, (2 * heightOfScreen/3)-mainTrack.getTrackSectionHeight());
     private Point upperTrackPosition = new Point(0, 500 * heightOfScreen / 1000);
     private Thomas thomas = new Thomas(new Point(widthOfScreen/3, (2 * heightOfScreen/3)-mainTrack.getTrackSectionHeight()));
-    private Track upperTrack = new Track(upperTrackPosition, 3);
+    private Track upperTrack = new Track();
     private Road road = new Road();
     private JFrame mainGameWindow = new JFrame("NewGame");// Makes window with
     private AffineTransform identityTx = new AffineTransform();

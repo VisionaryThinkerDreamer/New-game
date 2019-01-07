@@ -6,7 +6,7 @@ import java.io.IOException;
 
 public class Track
 {
-    private Image trackSectionImage;
+    private Image trackSectionImage = Toolkit.getDefaultToolkit().createImage(getClass().getResource("tracks.png"));
     private Point trackPosition;
     private Rectangle2D.Double trackBoundingBox;
     private int numberOfTrackSections;

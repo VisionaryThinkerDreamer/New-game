@@ -112,7 +112,8 @@ public class DavidsBeatEmUpController extends JComponent implements ActionListen
 		drawThomas();
 		drawRoad();
 		drawObstacle();
-		drawUpperTrack();
+		drawTracks(0, heightOfScreen / 2, 3);// ...Draw upper tracks left half
+		drawTracks(0, 3 * heightOfScreen / 4, 5);
 		if (testIntersection(thomasShape, upperTrackShape))
 		{
 			if (jumpingVelocity > 0 && thomasYOffsetFromGround < trackYPos)
@@ -167,11 +168,25 @@ public class DavidsBeatEmUpController extends JComponent implements ActionListen
 	}
 
 	/***********************************************************************************************
-	 * Draw upper track
+	 * Draw any tracks
 	 ***********************************************************************************************/
-	private void drawUpperTrack()
+	private void drawTracks(double trackXPos, int trackYPos, int numberOfTracks)
 	{
-		g2.drawImage(upperTrack.getTrackSectionImage(), upperTrack.getTrackPosition().x, upperTrack.getTrackPosition().y, null);
+		Image trackImage = upperTrack.getTrackSectionImage();
+		trackWidth = trackImage.getWidth(null);
+		trackHeight = trackImage.getHeight(null);
+		g2.setTransform(backgroundTx);// this is an identity transform
+		g2.translate(trackXPos, trackYPos); // center in screen
+		g2.scale(1.5, 1.5);
+		for (int i = 1; i <= numberOfTracks; i++)
+		{
+			g2.drawImage(trackImage, 0, 0, null);
+			upperTrackWidth = trackImage.getWidth(null);
+			upperTrackBox = new Rectangle(0, 0, trackWidth, trackYPos);
+			upperTrackShape = upperTrackBox.getBounds();
+			upperTrackTransform = g2.getTransform();
+			g2.translate(trackWidth, 0);
+		}
 	}
 
 	/***********************************************************************************************
