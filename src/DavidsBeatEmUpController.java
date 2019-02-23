@@ -19,7 +19,9 @@ import java.net.URL;
 import static javax.imageio.ImageIO.read;
 
 /***********************************************************************************************
- * David Frieder's Thomas Game Copyright 2018 David Frieder 11/10/2018 rev 3.4
+ * David Frieder's Thomas Game Copyright 2018 David Frieder 2/23/2018 rev 3.5
+ * 
+ * Added arraylist to tracks method in the track class
  * 
  * Can create tracks wherever we want Trying to consolidate track methods vic
  * 10/9/2018
@@ -75,8 +77,7 @@ public class DavidsBeatEmUpController extends JComponent implements ActionListen
 	private int gravityAcceleration = 1;
 	private Graphics2D g2;
 	private int roadWidth;
-	private int trackWidth;
-	int trackHeight;
+	
 	private int thomasYOffsetFromGround = 0;
 	private boolean lastWayFacing = true;
 	public DavidsThomas thomas = new DavidsThomas();
