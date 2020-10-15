@@ -66,3 +66,4 @@ import java.util.ArrayList;
 //    }
 //}
 
+//Copyright © 2020 David Frieder

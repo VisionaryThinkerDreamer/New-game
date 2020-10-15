@@ -428,4 +428,4 @@ public class DavidsBeatEmUpController extends JComponent implements ActionListen
 		AffineTransform backgroundTx = this.backgroundTx;
 	}
 
-}
+}//Copyright © 2020 David Frieder

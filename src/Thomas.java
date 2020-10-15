@@ -99,3 +99,4 @@ public class Thomas
 }
 
 
+//Copyright © 2020 David Frieder

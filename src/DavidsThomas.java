@@ -57,4 +57,4 @@ public class DavidsThomas
 	{
 		return thomasSpriteImageArray;
 	}
-}
+}//Copyright © 2020 David Frieder

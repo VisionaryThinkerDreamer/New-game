@@ -23,3 +23,4 @@ public class Road
         return roadImage;
     }
 }
+//Copyright © 2020 David Frieder
