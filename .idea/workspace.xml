@@ -1,67 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="c7281665-f391-48ab-8c3b-87fe3934e9ad" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
+    <list default="true" id="dde88333-f0fc-412c-a978-e939142e09ef" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.name" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.name" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/uiDesigner.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DavidsBeatEmUpController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DavidsBeatEmUpController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DavidsRoad.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DavidsRoad.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DavidsThomas.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DavidsThomas.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Road.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Road.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Thomas.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Thomas.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Track.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Track.java" afterDir="false" />
     </list>
-    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="FileTemplateManagerImpl">
-    <option name="RECENT_TEMPLATES">
-      <list>
-        <option value="Class" />
-      </list>
-    </option>
-  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="ProjectId" id="1dy8RnKRrDNsQ7shyAXKA9C4qqS" />
+  <component name="ProjectId" id="1ithineh3mokCB24F6P5r1j5kKM" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
   <component name="PropertiesComponent">
     <property name="Downloaded.Files.Path.Enabled" value="false" />
     <property name="Repository.Attach.Annotations" value="false" />
     <property name="Repository.Attach.JavaDocs" value="false" />
     <property name="Repository.Attach.Sources" value="false" />
-    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.proportion" value="0.0" />
+    <property name="project.structure.side.proportion" value="0.0" />
     <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
   </component>
-  <component name="RunDashboard">
-    <option name="ruleStates">
-      <list>
-        <RuleState>
-          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
-        </RuleState>
-        <RuleState>
-          <option name="name" value="StatusDashboardGroupingRule" />
-        </RuleState>
-      </list>
-    </option>
-  </component>
-  <component name="RunManager" selected="Application.TextEditor">
+  <component name="RunManager" selected="JUnit.StreamSearchTest.test1">
     <configuration default="true" type="Applet">
       <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="FileDecryptor" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="_02_File_Encrypt_Decrypt.FileDecryptor" />
-      <module name="Level5-Module0" />
+    <configuration name="LambdaButtons" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="_00_JButtons_with_Lambdas.LambdaButtons" />
+      <module name="Level5-Module2" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="_02_File_Encrypt_Decrypt.*" />
+          <option name="PATTERN" value="_00_JButtons_with_Lambdas.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -69,13 +54,13 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="FileEncryptor" type="Application" factoryName="Application" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="_02_File_Encrypt_Decrypt.FileEncryptor" />
-      <module name="Level5-Module0" />
+    <configuration name="LambdaMethods" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="_01_Lambda_Methods.LambdaMethods" />
+      <module name="Level5-Module2" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="_02_File_Encrypt_Decrypt.*" />
+          <option name="PATTERN" value="_01_Lambda_Methods.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -83,27 +68,13 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="FileRecorder" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="_01_File_Recorder.FileRecorder" />
-      <module name="Level5-Module0" />
+    <configuration name="StreamSorter" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="_03_Sorting_With_Streams.StreamSorter" />
+      <module name="Level5-Module2" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="_01_File_Recorder.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="TextEditor" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="Module_0_Checkpoint.TextEditor" />
-      <module name="Level5-Module0" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="Module_0_Checkpoint.*" />
+          <option name="PATTERN" value="_03_Sorting_With_Streams.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -117,33 +88,33 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="Serialization" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="Level5-Module0" />
+    <configuration name="StreamSearchTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="Level5-Module2" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="_05_Serialization.*" />
+          <option name="PATTERN" value="_04_Searching_With_Streams.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="_05_Serialization" />
-      <option name="MAIN_CLASS_NAME" value="_05_Serialization.Serialization" />
+      <option name="PACKAGE_NAME" value="_04_Searching_With_Streams" />
+      <option name="MAIN_CLASS_NAME" value="_04_Searching_With_Streams.StreamSearchTest" />
       <option name="TEST_OBJECT" value="class" />
       <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="Serialization.test" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="Level5-Module0" />
+    <configuration name="StreamSearchTest.test1" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="Level5-Module2" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="_05_Serialization.*" />
+          <option name="PATTERN" value="_04_Searching_With_Streams.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="_05_Serialization" />
-      <option name="MAIN_CLASS_NAME" value="_05_Serialization.Serialization" />
-      <option name="METHOD_NAME" value="test" />
+      <option name="PACKAGE_NAME" value="_04_Searching_With_Streams" />
+      <option name="MAIN_CLASS_NAME" value="_04_Searching_With_Streams.StreamSearchTest" />
+      <option name="METHOD_NAME" value="test1" />
       <option name="TEST_OBJECT" value="method" />
       <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
       <method v="2">
@@ -177,33 +148,26 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.TextEditor" />
-        <item itemvalue="Application.FileRecorder" />
-        <item itemvalue="Application.FileDecryptor" />
-        <item itemvalue="JUnit.Serialization" />
-        <item itemvalue="JUnit.Serialization.test" />
+        <item itemvalue="JUnit.StreamSearchTest.test1" />
+        <item itemvalue="JUnit.StreamSearchTest" />
+        <item itemvalue="Application.LambdaMethods" />
+        <item itemvalue="Application.LambdaButtons" />
+        <item itemvalue="Application.StreamSorter" />
       </list>
     </recent_temporary>
   </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="SvnConfiguration">
     <configuration />
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="c7281665-f391-48ab-8c3b-87fe3934e9ad" name="Default Changelist" comment="" />
-      <created>1593385966515</created>
+      <changelist id="dde88333-f0fc-412c-a978-e939142e09ef" name="Default Changelist" comment="" />
+      <created>1602732925209</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1593385966515</updated>
+      <updated>1602732925209</updated>
     </task>
-    <task id="LOCAL-00001" summary="Committing eml and iml files for the first time. Don't know what those are.">
-      <created>1593993859080</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1593993859080</updated>
-    </task>
-    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -211,16 +175,33 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State>
-              <option name="COLUMN_ORDER" />
-            </State>
+            <State />
           </value>
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
-  <component name="VcsManagerConfiguration">
-    <MESSAGE value="Committing eml and iml files for the first time. Don't know what those are." />
-    <option name="LAST_COMMIT_MESSAGE" value="Committing eml and iml files for the first time. Don't know what those are." />
+  <component name="WindowStateProjectService">
+    <state width="1398" height="254" key="GridCell.Tab.0.bottom" timestamp="1608171092005">
+      <screen x="0" y="25" width="1680" height="979" />
+    </state>
+    <state width="1398" height="254" key="GridCell.Tab.0.bottom/0.25.1680.979@0.25.1680.979" timestamp="1608171092005" />
+    <state width="1398" height="254" key="GridCell.Tab.0.center" timestamp="1608171092004">
+      <screen x="0" y="25" width="1680" height="979" />
+    </state>
+    <state width="1398" height="254" key="GridCell.Tab.0.center/0.25.1680.979@0.25.1680.979" timestamp="1608171092004" />
+    <state width="1398" height="254" key="GridCell.Tab.0.left" timestamp="1608171092004">
+      <screen x="0" y="25" width="1680" height="979" />
+    </state>
+    <state width="1398" height="254" key="GridCell.Tab.0.left/0.25.1680.979@0.25.1680.979" timestamp="1608171092004" />
+    <state width="1398" height="254" key="GridCell.Tab.0.right" timestamp="1608171092004">
+      <screen x="0" y="25" width="1680" height="979" />
+    </state>
+    <state width="1398" height="254" key="GridCell.Tab.0.right/0.25.1680.979@0.25.1680.979" timestamp="1608171092004" />
+    <state x="349" y="150" key="SettingsEditor" timestamp="1606958471342">
+      <screen x="0" y="25" width="1680" height="979" />
+    </state>
+    <state x="349" y="150" key="SettingsEditor/0.25.1680.979@0.25.1680.979" timestamp="1606958471342" />
   </component>
 </project>
